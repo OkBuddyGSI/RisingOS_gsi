@@ -1,29 +1,29 @@
-From bb6cb60a0e692f238cb737000093efba0b798d74 Mon Sep 17 00:00:00 2001
+From 77a0d495db8a09e91dea1e3958491ebcabbff113 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Wed, 14 Dec 2022 17:21:00 -0500
-Subject: [PATCH 1/4] Call Samsung's ISehSysInputDev to report screen state to
- touchscreen driver
+Subject: [PATCH 30/53] Call Samsung's ISehSysInputDev to report screen state
+ to touchscreen driver
 
 This fixes touchscreen not waking up on Galaxy F23
 ---
  services/core/Android.bp                      |  1 +
- .../server/display/LocalDisplayAdapter.java   | 27 +++++++++++++++++++
- 2 files changed, 28 insertions(+)
+ .../server/display/LocalDisplayAdapter.java   | 32 +++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
 diff --git a/services/core/Android.bp b/services/core/Android.bp
-index 9948cffa251e..329b737ce077 100644
+index f8d19ec9903d..735959270c11 100644
 --- a/services/core/Android.bp
 +++ b/services/core/Android.bp
-@@ -189,6 +189,7 @@ java_library_static {
+@@ -186,6 +186,7 @@ java_library_static {
+         "com.android.sysprop.watchdog",
+         "ImmutabilityAnnotation",
          "securebox",
-         "vendor.aac.hardware.richtap.vibrator",
-         "vendor.aospa.biometrics.face",
 +        "vendor.samsung.hardware.sysinput-V1.2-java", // HIDL
      ],
      javac_shard_size: 50,
      javacflags: [
 diff --git a/services/core/java/com/android/server/display/LocalDisplayAdapter.java b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
-index 89d865e5ae39..641dd6e1e319 100644
+index 89d865e5ae39..9f2793a16a28 100644
 --- a/services/core/java/com/android/server/display/LocalDisplayAdapter.java
 +++ b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
 @@ -33,6 +33,7 @@ import android.os.Trace;
@@ -52,7 +52,7 @@ index 89d865e5ae39..641dd6e1e319 100644
  
          LocalDisplayDevice(IBinder displayToken, long physicalDisplayId,
                  SurfaceControl.StaticDisplayInfo staticDisplayInfo,
-@@ -825,16 +830,38 @@ final class LocalDisplayAdapter extends DisplayAdapter {
+@@ -825,17 +830,44 @@ final class LocalDisplayAdapter extends DisplayAdapter {
                              }
                              mSidekickActive = false;
                          }
@@ -66,6 +66,7 @@ index 89d865e5ae39..641dd6e1e319 100644
                          Trace.traceBegin(Trace.TRACE_TAG_POWER, "setDisplayState("
                                  + "id=" + physicalDisplayId
                                  + ", state=" + Display.stateToString(state) + ")");
++
 +                        if (samsungSysinput != null) {
 +                            try {
 +                                Log.d("PHH", "setTspEnable 1, " + state + ", true");
@@ -74,12 +75,14 @@ index 89d865e5ae39..641dd6e1e319 100644
 +                                Log.d("PHH", "Failed settings tsp enable", t);
 +                            }
 +                        }
++
                          try {
                              mSurfaceControlProxy.setDisplayPowerMode(token, mode);
                              Trace.traceCounter(Trace.TRACE_TAG_POWER, "DisplayPowerMode", mode);
                          } finally {
                              Trace.traceEnd(Trace.TRACE_TAG_POWER);
                          }
++
 +                        if (samsungSysinput != null) {
 +                            try {
 +                                Log.d("PHH", "setTspEnable 1, " + state + ", false");
@@ -88,9 +91,12 @@ index 89d865e5ae39..641dd6e1e319 100644
 +                                Log.d("PHH", "Failed settings tsp enable", t);
 +                            }
 +                        }
++
                          setCommittedState(state);
++
                          // If we're entering a suspended (but not OFF) power state and we
                          // have a sidekick available, tell it now that it can take control.
+                         if (Display.isSuspendedState(state) && state != Display.STATE_OFF
 -- 
-2.34.1
+2.25.1
 

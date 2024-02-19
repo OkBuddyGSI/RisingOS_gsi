@@ -1,7 +1,8 @@
-From 65172c87a72e1d33abb88ba1b67d7dfe6b16619f Mon Sep 17 00:00:00 2001
+From 941165807f402c61536dbf354895316b22ae4807 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 10 Dec 2023 18:04:49 -0500
-Subject: [PATCH 4/4] Add support for Samsung full brightness on their AIDL HAL
+Subject: [PATCH 46/53] Add support for Samsung full brightness on their AIDL
+ HAL
 
 ---
  services/core/Android.bp                      |  4 ++
@@ -9,10 +10,10 @@ Subject: [PATCH 4/4] Add support for Samsung full brightness on their AIDL HAL
  2 files changed, 44 insertions(+)
 
 diff --git a/services/core/Android.bp b/services/core/Android.bp
-index 97e9c0ac1ce3..dc3fcc3b575a 100644
+index 18a9fe12ecb7..6cba27c50972 100644
 --- a/services/core/Android.bp
 +++ b/services/core/Android.bp
-@@ -197,6 +197,10 @@ java_library_static {
+@@ -194,6 +194,10 @@ java_library_static {
          "vendor.oplus.hardware.biometrics.fingerprint-V2.1-java",
          "vendor.oppo.hardware.biometrics.fingerprint-V2.1-java",
          "vendor.xiaomi.hardware.fingerprintextension-V1.0-java",
@@ -24,10 +25,10 @@ index 97e9c0ac1ce3..dc3fcc3b575a 100644
      javac_shard_size: 50,
      javacflags: [
 diff --git a/services/core/java/com/android/server/lights/LightsService.java b/services/core/java/com/android/server/lights/LightsService.java
-index caf9eba7d9a8..04ad3114d2ac 100644
+index 8fa9c4f3a698..390c6ac6c50f 100644
 --- a/services/core/java/com/android/server/lights/LightsService.java
 +++ b/services/core/java/com/android/server/lights/LightsService.java
-@@ -45,8 +45,10 @@ import com.android.internal.util.DumpUtils;
+@@ -44,8 +44,10 @@ import com.android.internal.util.DumpUtils;
  import com.android.internal.util.Preconditions;
  import com.android.server.SystemService;
  
@@ -38,7 +39,7 @@ index caf9eba7d9a8..04ad3114d2ac 100644
  import java.util.ArrayList;
  import java.util.Collections;
  import java.util.HashMap;
-@@ -54,6 +56,8 @@ import java.util.List;
+@@ -53,6 +55,8 @@ import java.util.List;
  import java.util.Map;
  import java.util.function.Supplier;
  
@@ -47,7 +48,7 @@ index caf9eba7d9a8..04ad3114d2ac 100644
  public class LightsService extends SystemService {
      static final String TAG = "LightsService";
      static final boolean DEBUG = false;
-@@ -64,6 +68,10 @@ public class LightsService extends SystemService {
+@@ -63,6 +67,10 @@ public class LightsService extends SystemService {
      @Nullable
      private final Supplier<ILights> mVintfLights;
  
@@ -58,7 +59,7 @@ index caf9eba7d9a8..04ad3114d2ac 100644
      @VisibleForTesting
      final LightsManagerBinderService mManagerService;
  
-@@ -298,6 +306,17 @@ public class LightsService extends SystemService {
+@@ -297,6 +305,17 @@ public class LightsService extends SystemService {
                  int brightnessInt = BrightnessSynchronizer.brightnessFloatToInt(brightness);
  
                  if(mHwLight.id == 0) {
@@ -76,7 +77,7 @@ index caf9eba7d9a8..04ad3114d2ac 100644
                      String fp = SystemProperties.get("ro.vendor.build.fingerprint", "hello");
                      if(fp.matches(".*astarqlte.*")) {
                          int newBrightness = brightnessInt;
-@@ -513,6 +532,27 @@ public class LightsService extends SystemService {
+@@ -499,6 +518,27 @@ public class LightsService extends SystemService {
          mH = new Handler(looper);
          mVintfLights = service.get() != null ? service : null;
  
@@ -105,5 +106,5 @@ index caf9eba7d9a8..04ad3114d2ac 100644
          mManagerService = new LightsManagerBinderService();
      }
 -- 
-2.34.1
+2.25.1
 
