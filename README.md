@@ -1,8 +1,6 @@
 ![alt text][logo]
 
-[logo]:https://crdroid.net/img/logo.png "crDroid Android"
-
-### To get started with building crDroid GSI,
+### To get started with building RisingOS GSI,
 you'll need to get familiar with [Git and Repo](https://source.android.com/source/using-repo.html) as well as [How to build a GSI](https://github.com/phhusson/treble_experimentations/wiki/How-to-build-a-GSI%3F).
 
 
@@ -102,5 +100,5 @@ These people have helped this project in some way or another, so they should be 
 - [Peter Cai](https://github.com/PeterCxy)
 - [Iceows](https://github.com/Iceows)
 - [ChonDoit](https://github.com/ChonDoit)
-
-
+- [Nazim N](https://github.com/naz664)
+- [MisterZtr](https://github.com/MisterZtr)
