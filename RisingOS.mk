@@ -15,6 +15,23 @@ SELINUX_IGNORE_NEVERALLOWS := true
 # Set Bootanimation at 720P
 TARGET_BOOT_ANIMATION_RES := 720
 
+RISING_MAINTAINER := "Shirayuki39"
+TARGET_BUILD_APERTURE_CAMERA := true
+TARGET_ENABLE_BLUR := true
+TARGET_HAS_UDFPS := false
+TARGET_USE_PIXEL_FINGERPRINT := true
+WITH_GMS := true
+TARGET_CORE_GMS := true
+TARGET_USE_GOOGLE_TELEPHONY := false
+
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+	persist.sys.binary_xml=false \
+	dalvik.vm.dex2oat64.enabled=true \
+
+#prebuilts
+PRODUCT_PACKAGES += \
+  OpenEUICC \
+
 # APN
 PRODUCT_PACKAGES += apns-conf.xml
 
