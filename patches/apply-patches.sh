@@ -3,8 +3,8 @@
 set -e
 
 source="$(readlink -f -- $1)"
-trebledroid="$source/patches/trebledroid"
-personal="$source/patches/personal"
+trebledroid="$source/RisingOS_gsi/patches/trebledroid"
+personal="$source/RisingOS_gsi/patches/personal"
 
 printf "\n ### APPLYING TREBLEDROID PATCHES ###\n";
 sleep 1.0;
