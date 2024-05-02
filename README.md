@@ -8,20 +8,20 @@ As a first step, you'll have to create and enter a folder with the appropriate n
 To do that, run these commands:
 
 ```bash
-   mkdir crDroid
-   cd crDroid
+   mkdir Rising
+   cd Rising
 ```
 
 ### To initialize your local repository, run this command:
 
 ```bash
-   repo init -u https://github.com/crdroidandroid/android.git -b 14.0
+   repo init -u https://github.com/RisingTechOSS/android -b fourteen --git-lfs
 ```
  
 
 ### Clone the Manifest to add necessary dependencies for gsi:
  
-    git clone https://github.com/naz664/treble_manifest.git .repo/local_manifests  -b 14
+    git clone https://github.com/OkBuddyGSI/treble_manifest.git .repo/local_manifests  -b 14
   
 
 
@@ -37,7 +37,7 @@ repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --optimiz
 Copy the patches folder to rom folder and in rom folder
 
 ```
-   bash patches/apply-patches.sh .
+   bash RisingOS_gsi/patches/apply-patches.sh .
 ```
 
 ## Generating Rom Makefile
